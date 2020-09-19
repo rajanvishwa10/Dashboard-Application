@@ -31,8 +31,10 @@
         android:textSize="18sp" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_below="@+id/time"
         android:layout_alignParentStart="true"
         android:layout_marginStart="-1dp"
@@ -44,61 +46,60 @@
 
         <TextView
             android:id="@+id/agentName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:paddingTop="5dp"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="25dp"
+            android:paddingTop="10dp"
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
             android:scrollbars="horizontal"
-            android:text="Name" />
+            app:drawableStartCompat="@drawable/agent" />
 
         <TextView
             android:id="@+id/totalDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="100dp"
             android:paddingStart="5dp"
-            android:paddingTop="5dp"
+            android:paddingTop="8dp"
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
-            android:text="Date" />
+            app:drawableStartCompat="@drawable/icon" />
 
         <TextView
             android:id="@+id/totalCall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="49dp"
+            android:layout_height="46dp"
             android:layout_marginStart="145dp"
-            android:padding="5dp"
-            android:text="Time" />
+            android:padding="10dp"
+            app:drawableStartCompat="@drawable/icon1" />
 
         <TextView
             android:id="@+id/uniqueCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="205dp"
-            android:padding="5dp"
-            android:text="Number" />
+            android:padding="10dp"
+            app:drawableStartCompat="@drawable/icons8_phone_26px" />
 
         <TextView
             android:id="@+id/lastCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="280dp"
-            android:padding="5dp"
-            android:text="Duration" />
+            android:padding="10dp"
+            app:drawableStartCompat="@drawable/icon3" />
     </androidx.cardview.widget.CardView>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text"
+        android:layout_below="@+id/cardview"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="-2dp"
-        android:layout_marginTop="38dp"
-        android:layout_marginBottom="-7dp">
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="0dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"

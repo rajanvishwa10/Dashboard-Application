@@ -15,7 +15,7 @@
 
         <TextView
             android:id="@+id/agentName"
-            android:layout_width="50dp"
+            android:layout_width="90dp"
             android:scrollHorizontally="true"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
@@ -34,7 +34,7 @@
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
             android:text="hello"
-            android:layout_marginStart="60dp" />
+            android:layout_marginStart="100dp" />
 
         <TextView
             android:id="@+id/totalCall"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="hello"
-            android:layout_marginStart="145dp"/>
+            android:layout_marginStart="160dp"/>
 
         <TextView
             android:id="@+id/uniqueCall"
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="hello"
-            android:layout_marginStart="310dp" />
+            android:layout_marginStart="280dp" />
     </androidx.cardview.widget.CardView>
 
 

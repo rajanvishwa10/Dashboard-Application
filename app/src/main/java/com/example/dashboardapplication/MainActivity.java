@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 //        RequestQueue requestQueue1 = Volley.newRequestQueue(this);
 //        requestQueue1.add(jsonObjectRequest);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxRmh3ssfU07SRuXTxlv5lZG-dbHglv-MhyxhkNPr_OYfWnOt8h/exec?action=getItems",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxdI-hNvljA_oh-K0r-pMWcerUD2JWTu1WjxvyU/exec?action=getItems",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -200,20 +200,21 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
 
-                String name = jsonObject1.getString("name");
-                String date = jsonObject1.getString("date");
-                String time = jsonObject1.getString("time");
-                String phone = jsonObject1.getString("phone");
-                String duration = jsonObject1.getString("duration");
-
+                String name = jsonObject1.getString("agent");
+                String date = jsonObject1.getString("duration");
+                String time = jsonObject1.getString("totaldial");
+                String phone = jsonObject1.getString("uniquedial");
+                String duration = jsonObject1.getString("lastdial");
+                String[] duratn = duration.split("T");
+                String[] durat = duratn[0].split("-");
+                String d = durat[0];
                 //List<String, String> item = new HashMap<>();
                 Content content = new Content();
                 content.setName(name);
                 content.setDate(date);
                 content.setTime(time);
                 content.setPhone(phone);
-                String[] duratn = duration.split(" ");
-                content.setStatus(duratn[0]);
+                content.setStatus(d);
                 contentList.add(content);
 
             }
