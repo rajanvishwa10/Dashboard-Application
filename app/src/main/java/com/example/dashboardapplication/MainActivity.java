@@ -41,11 +41,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    String mon, dayStr;
+    String mon;
     private TextView textView;
-    private RequestQueue requestQueue;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private List<Content> contentList;
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String title = "Agent Dashboard".toUpperCase();
-        getSupportActionBar().setTitle(title);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
         textView = findViewById(R.id.text);
         Calendar calendar = Calendar.getInstance();
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         textView.setText(date);
                     }
                 }, year, month, day);
-                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                Objects.requireNonNull(datePickerDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 datePickerDialog.show();
             }
         });
@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
             public void onRefresh() {
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -130,46 +131,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getData() {
-//        String url = "https://sheet.best/api/sheets/4ce1a216-43af-48e5-946a-9ffe26f351d7";
-//        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-//                new Response.Listener<JSONArray>() {
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        try {
-//                            for (int i = 0; i < response.length(); i++) {
-//                                JSONObject jsonObject = response.getJSONObject(i);
-//                                Content content = new Content();
-//                                content.setName(jsonObject.getString("Name"));
-//                                content.setDate(jsonObject.getString("Date"));
-//                                content.setTime(jsonObject.getString("Time"));
-//                                content.setPhone(jsonObject.getString("Phone"));
-//                                String duration = jsonObject.getString("Duration");
-//                                String[] duratn = duration.split(" ");
-//                                content.setStatus(duratn[0]);
-//                                contentList.add(content);
-//                            }
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                        setOnClick();
-//                        layoutManager = new LinearLayoutManager(getApplicationContext());
-//                        adapter = new Adapter(getApplicationContext(), contentList, listener);
-//                        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//                        recyclerView.setLayoutManager(layoutManager);
-//                        recyclerView.setAdapter(adapter);
-//                    }
-//
-//
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                error.printStackTrace();
-//            }
-//        });
-//        RequestQueue requestQueue1 = Volley.newRequestQueue(this);
-//        requestQueue1.add(jsonObjectRequest);
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxdI-hNvljA_oh-K0r-pMWcerUD2JWTu1WjxvyU/exec?action=getItems",
                 new Response.Listener<String>() {
                     @Override
@@ -204,17 +165,17 @@ public class MainActivity extends AppCompatActivity {
                 String time = jsonObject1.getString("totaldial");
                 String phone = jsonObject1.getString("uniquedial");
                 String duration = jsonObject1.getString("lastdial");
-                //String[] split = duration.split(" ");
-                //String secondString = split[1];
+                String firstdial = jsonObject1.getString("firstdial");
                 int firstString = duration.indexOf(" ");
-                //int secondInt = duration.indexOf("5");
-                String secondString = duration.substring(firstString+1);
+                String secondString = duration.substring(firstString + 1);
+
                 Content content = new Content();
-                content.setName(name);
+                content.setName(name.toUpperCase());
                 content.setDate(date);
                 content.setTime(time);
                 content.setPhone(phone);
                 content.setStatus(secondString);
+                content.setFirstcall(firstdial);
                 contentList.add(content);
 
             }
@@ -235,7 +196,15 @@ public class MainActivity extends AppCompatActivity {
         listener = new Adapter.RecyclerViewOnClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(MainActivity.this, contentList.get(position).getName().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, contentList.get(position).getName(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), AgentActivity.class);
+                intent.putExtra("name", contentList.get(position).getName());
+                intent.putExtra("first", contentList.get(position).getDate());
+                intent.putExtra("second", contentList.get(position).getTime());
+                intent.putExtra("third", contentList.get(position).getPhone());
+                intent.putExtra("fourth", contentList.get(position).getStatus());
+                intent.putExtra("firstdial", contentList.get(position).getFirstcall());
+                startActivity(intent);
             }
         };
     }

@@ -1,14 +1,15 @@
 package com.example.dashboardapplication;
 
 public class Content {
-    public String name, date, time, phone, status;
+    public String name, date, time, phone, status,firstcall;
 
-    public Content(String name, String date, String time, String phone, String status) {
+    public Content(String name, String date, String time, String phone, String status, String firstcall) {
         this.name = name;
         this.date = date;
         this.time = time;
         this.phone = phone;
         this.status = status;
+        this.firstcall = firstcall;
     }
 
     public String getName() {
@@ -25,6 +26,14 @@ public class Content {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getFirstcall() {
+        return firstcall;
+    }
+
+    public void setFirstcall(String firstcall) {
+        this.firstcall = firstcall;
     }
 
     public Content() {

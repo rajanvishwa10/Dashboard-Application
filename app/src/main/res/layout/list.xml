@@ -8,7 +8,6 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/table_background"
         app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -37,7 +36,7 @@
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
             android:text="hello"
-            android:textAlignment="center"
+            android:textAlignment="viewEnd"
             android:textStyle="bold" />
 
         <TextView
@@ -62,6 +61,15 @@
             android:id="@+id/lastCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="255dp"
+            android:maxLength="5"
+            android:padding="5dp"
+            android:text="hello"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/firstcall"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginStart="255dp"
             android:maxLength="5"
             android:padding="5dp"

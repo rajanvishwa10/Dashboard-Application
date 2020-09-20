@@ -25,8 +25,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         this.listener = listener;
     }
 
-
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,6 +40,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.textView3.setText(String.valueOf(content.getTime()));
         holder.textView4.setText(String.valueOf(content.getPhone()));
         holder.textView5.setText(String.valueOf(content.getStatus()));
+        holder.textView6.setText(String.valueOf(content.getFirstcall()));
     }
 
     @Override
@@ -55,7 +54,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView textView, textView2, textView3, textView4, textView5;
+        public TextView textView, textView2, textView3, textView4, textView5, textView6;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,6 +63,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             textView3 = itemView.findViewById(R.id.totalCall);
             textView4 = itemView.findViewById(R.id.uniqueCall);
             textView5 = itemView.findViewById(R.id.lastCall);
+            textView6 = itemView.findViewById(R.id.firstcall);
             itemView.setOnClickListener(this);
         }
 
