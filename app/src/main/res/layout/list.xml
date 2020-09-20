@@ -1,65 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/table_background"
+        app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/table_background">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/agentName"
             android:layout_width="90dp"
-            android:scrollHorizontally="true"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:paddingTop="5dp"
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
             android:scrollbars="horizontal"
-            android:layout_marginStart="5dp"
-            />
+            android:scrollHorizontally="true"
+            android:textAlignment="center"
+            android:textColor="#E53935"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/totalDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
             android:paddingStart="5dp"
             android:paddingTop="5dp"
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
             android:text="hello"
-            android:layout_marginStart="100dp" />
+            android:textAlignment="center"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/totalCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="160dp"
             android:padding="5dp"
             android:text="hello"
-            android:layout_marginStart="160dp"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/uniqueCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="212dp"
             android:padding="5dp"
             android:text="hello"
-            android:layout_marginStart="205dp" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lastCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="255dp"
+            android:maxLength="5"
             android:padding="5dp"
             android:text="hello"
-            android:layout_marginStart="280dp" />
+            android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        android:layout_marginTop="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".MainActivity">
 
     <TextView
@@ -46,9 +47,9 @@
 
         <TextView
             android:id="@+id/agentName"
-            android:layout_width="35dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginStart="35dp"
             android:paddingTop="10dp"
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
@@ -60,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
-            android:paddingStart="5dp"
+            android:paddingStart="0dp"
             android:paddingTop="8dp"
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
@@ -85,8 +86,8 @@
         <TextView
             android:id="@+id/lastCall"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="280dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="250dp"
             android:padding="10dp"
             app:drawableStartCompat="@drawable/icon3" />
     </androidx.cardview.widget.CardView>

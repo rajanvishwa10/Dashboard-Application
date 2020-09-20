@@ -43,7 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
     String mon, dayStr;
     private TextView textView;
     private RequestQueue requestQueue;
@@ -205,19 +204,21 @@ public class MainActivity extends AppCompatActivity {
                 String time = jsonObject1.getString("totaldial");
                 String phone = jsonObject1.getString("uniquedial");
                 String duration = jsonObject1.getString("lastdial");
-                String[] duratn = duration.split("T");
-                String[] durat = duratn[0].split("-");
-                String d = durat[0];
-                //List<String, String> item = new HashMap<>();
+                //String[] split = duration.split(" ");
+                //String secondString = split[1];
+                int firstString = duration.indexOf(" ");
+                //int secondInt = duration.indexOf("5");
+                String secondString = duration.substring(firstString+1);
                 Content content = new Content();
                 content.setName(name);
                 content.setDate(date);
                 content.setTime(time);
                 content.setPhone(phone);
-                content.setStatus(d);
+                content.setStatus(secondString);
                 contentList.add(content);
 
             }
+
 
         } catch (JSONException e) {
             e.printStackTrace();
