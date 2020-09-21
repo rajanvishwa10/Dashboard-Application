@@ -45,7 +45,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list.size()-1;
     }
 
 
@@ -72,8 +72,5 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             listener.onClick(view, getAdapterPosition());
         }
     }
-    public void filterlist(List<Content> filteredList){
-        list = filteredList;
-        notifyDataSetChanged();
-    }
+
 }

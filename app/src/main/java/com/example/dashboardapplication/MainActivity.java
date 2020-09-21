@@ -10,12 +10,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,29 +21,26 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     String mon,dayStr;
-    private TextView textView;
+    private TextView textView,textView2;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
+
     private List<Content> contentList;
     private Adapter adapter;
     private Adapter.RecyclerViewOnClickListener listener;
@@ -57,14 +50,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Recycler();
         String title = "Agent Dashboard".toUpperCase();
         Objects.requireNonNull(getSupportActionBar()).setTitle(title);
         textView = findViewById(R.id.text);
+        textView2 = findViewById(R.id.time);
         Calendar calendar = Calendar.getInstance();
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
         final int month = calendar.get(Calendar.MONTH);
         final int year = calendar.get(Calendar.YEAR);
         swipeRefreshLayout = findViewById(R.id.swipe);
+
+        getRefreshTime();
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,19 +93,21 @@ public class MainActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                getRefreshTime();
+                Recycler();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
         getData();
-        recyclerView = findViewById(R.id.recycler);
-        contentList = new ArrayList<>();
-
     }
-
-
+    private void Recycler(){
+        recyclerView = findViewById(R.id.recycler);
+        recyclerView.setNestedScrollingEnabled(false);
+        layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        contentList = new ArrayList<>();
+    }
 
     private void getData() {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxdI-hNvljA_oh-K0r-pMWcerUD2JWTu1WjxvyU/exec?action=getItems",
@@ -163,12 +164,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         setOnClick();
-        layoutManager = new LinearLayoutManager(getApplicationContext());
+
         adapter = new Adapter(getApplicationContext(), contentList, listener);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
+
 
     private void setOnClick() {
         listener = new Adapter.RecyclerViewOnClickListener() {
@@ -177,16 +177,19 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, contentList.get(position).getName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), AgentActivity.class);
                 intent.putExtra("name", contentList.get(position).getName());
-//                intent.putExtra("first", contentList.get(position).getDate());
-//                intent.putExtra("second", contentList.get(position).getTime());
-//                intent.putExtra("third", contentList.get(position).getPhone());
-//                intent.putExtra("fourth", contentList.get(position).getStatus());
-//                intent.putExtra("firstdial", contentList.get(position).getFirstcall());
                 intent.putExtra("date", textView.getText());
                 startActivity(intent);
+                getRefreshTime();
             }
         };
-    }
 
+    }
+    public void getRefreshTime(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd:MM:yyyy hh:mm:ss");
+        Date date = new Date();
+        String strDate = formatter.format(date);
+        String[] splitStr = strDate.split(" ");
+        textView2.setText("Last Refresh "+splitStr[1]);
+    }
 
 }
