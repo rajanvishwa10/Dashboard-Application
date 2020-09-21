@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    String mon;
+    String mon,dayStr;
     private TextView textView;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
@@ -76,10 +76,13 @@ public class MainActivity extends AppCompatActivity {
                         if (month < 10) {
                             mon = "0" + month;
                         }
-//                        if (day < 10) {
-//                            dayStr = "0" + day;
-//                        }
-                        String date = day + "-" + mon + "-" + year;
+                        if (day < 10) {
+                            dayStr = "0" + day;
+                        }
+                        if(day>=10){
+                            dayStr = String.valueOf(day);
+                        }
+                        String date = dayStr + "-" + mon + "-" + year;
                         textView.setText(date);
                     }
                 }, year, month, day);
@@ -87,24 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
-        textView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                filter(editable.toString());
-            }
-
-
-        });
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -120,15 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void filter(String text) {
-        List<Content> filteredlist = new ArrayList<>();
-        for (Content item : filteredlist) {
-            if (item.getDate().contains(text)) {
-                filteredlist.add(item);
-            }
-        }
-        adapter.filterlist(filteredlist);
-    }
+
 
     private void getData() {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxdI-hNvljA_oh-K0r-pMWcerUD2JWTu1WjxvyU/exec?action=getItems",
@@ -199,11 +177,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, contentList.get(position).getName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), AgentActivity.class);
                 intent.putExtra("name", contentList.get(position).getName());
-                intent.putExtra("first", contentList.get(position).getDate());
-                intent.putExtra("second", contentList.get(position).getTime());
-                intent.putExtra("third", contentList.get(position).getPhone());
-                intent.putExtra("fourth", contentList.get(position).getStatus());
-                intent.putExtra("firstdial", contentList.get(position).getFirstcall());
+//                intent.putExtra("first", contentList.get(position).getDate());
+//                intent.putExtra("second", contentList.get(position).getTime());
+//                intent.putExtra("third", contentList.get(position).getPhone());
+//                intent.putExtra("fourth", contentList.get(position).getStatus());
+//                intent.putExtra("firstdial", contentList.get(position).getFirstcall());
+                intent.putExtra("date", textView.getText());
                 startActivity(intent);
             }
         };
