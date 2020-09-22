@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ public class AgentActivity extends AppCompatActivity {
     private LinearLayoutManager layoutManager;
     private List<Content2> contentList;
     private Adapter2 adapter;
+    private ProgressDialog progressDialog;
     public TextView textView, textView2, textView3, textView5, textView4, textView7, textView6;
 
     @Override
@@ -40,6 +42,12 @@ public class AgentActivity extends AppCompatActivity {
 
         String agentName = getIntent().getStringExtra("name");
         Objects.requireNonNull(getSupportActionBar()).setTitle(agentName);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Getting Data");
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading");
+        progressDialog.show();
 
         textView = findViewById(R.id.text1);
         textView2 = findViewById(R.id.text2);
@@ -83,6 +91,7 @@ public class AgentActivity extends AppCompatActivity {
 
     private void parseItems(String response) {
         try {
+            progressDialog.dismiss();
             JSONObject jsonObject = new JSONObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("items");
 

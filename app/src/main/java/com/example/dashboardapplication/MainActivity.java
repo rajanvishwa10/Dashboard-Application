@@ -6,10 +6,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -36,11 +39,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    String mon,dayStr;
-    private TextView textView,textView2;
+    String mon, dayStr;
+    private TextView textView, textView2;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
-
+    private ProgressDialog progressDialog;
     private List<Content> contentList;
     private Adapter adapter;
     private Adapter.RecyclerViewOnClickListener listener;
@@ -56,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle(title);
         textView = findViewById(R.id.text);
         textView2 = findViewById(R.id.time);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Getting Data");
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading");
+        progressDialog.show();
+
         Calendar calendar = Calendar.getInstance();
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
         final int month = calendar.get(Calendar.MONTH);
@@ -78,35 +87,81 @@ public class MainActivity extends AppCompatActivity {
                         if (day < 10) {
                             dayStr = "0" + day;
                         }
-                        if(day>=10){
+                        if (day >= 10) {
                             dayStr = String.valueOf(day);
                         }
                         String date = dayStr + "-" + mon + "-" + year;
                         textView.setText(date);
+                        postDate(date);
+                        recyclerView.invalidate();
                     }
                 }, year, month, day);
                 Objects.requireNonNull(datePickerDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 datePickerDialog.show();
+
             }
         });
+
+//        textView.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                postDate(editable);
+//                //textView.setText(editable);
+//            }
+//        });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                progressDialog.show();
                 getRefreshTime();
-                Recycler();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
         getData();
     }
-    private void Recycler(){
+
+    private void Recycler() {
         recyclerView = findViewById(R.id.recycler);
         recyclerView.setNestedScrollingEnabled(false);
         layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         contentList = new ArrayList<>();
+    }
+
+    private void postDate(String editable) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbyH3M-xgSzJc-_mmil9jlUeWAuleZ_o_-vskFUBDCN6tZw7Al0/exec?action=getItemByDate&name=Master Sheet"
+                + "&date=" + editable,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        int socketTimeOut = 1000;
+        RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        stringRequest.setRetryPolicy(retryPolicy);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+
     }
 
     private void getData() {
@@ -132,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void parseItems(String response) {
+        progressDialog.dismiss();
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("items");
@@ -167,6 +223,8 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new Adapter(getApplicationContext(), contentList, listener);
         recyclerView.setAdapter(adapter);
+        recyclerView.invalidate();
+
     }
 
 
@@ -184,12 +242,13 @@ public class MainActivity extends AppCompatActivity {
         };
 
     }
-    public void getRefreshTime(){
+
+    public void getRefreshTime() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd:MM:yyyy hh:mm:ss");
         Date date = new Date();
         String strDate = formatter.format(date);
         String[] splitStr = strDate.split(" ");
-        textView2.setText("Last Refresh "+splitStr[1]);
+        textView2.setText("Last Refresh " + splitStr[1]);
     }
 
 }
