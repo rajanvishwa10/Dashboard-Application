@@ -123,7 +123,6 @@ public class AgentActivity extends AppCompatActivity {
                 content.setDuration(String.valueOf(duration));
                 contentList.add(content);
 
-
             }
 
         } catch (JSONException e) {
@@ -139,14 +138,10 @@ public class AgentActivity extends AppCompatActivity {
         textView2.setText(String.valueOf(last));
         textView5.setText(String.valueOf(count));
         textView.setText(String.format("%.2f", (double) totalDuration / 60));
-        int temp = 0;
-        for (int i = 0; i < contentList.size(); i++) {
-            if ((contentList.get(i).getPhone()).equals(contentList.get(i++).getPhone())) {
-                temp++;
-            }
 
-        }
-        textView3.setText(String.valueOf(temp));
+        String unique = getIntent().getStringExtra("unique");
+        textView3.setText(unique);
+
     }
 
 }

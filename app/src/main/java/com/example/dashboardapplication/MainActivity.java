@@ -235,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, contentList.get(position).getName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), AgentActivity.class);
                 intent.putExtra("name", contentList.get(position).getName());
+                intent.putExtra("unique", contentList.get(position).getPhone());
                 intent.putExtra("date", textView.getText());
                 startActivity(intent);
                 getRefreshTime();
